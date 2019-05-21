@@ -20,3 +20,18 @@ CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -v 3.7.2
 ```bash
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${CONTAINER_ID}
 ```
+
+## What should you do if kubectl can't find the cluster
+
+```bash
+kubectl config set-cluster demo-cluster --server=http://master.example.com:8080
+kubectl config set-context demo-system --cluster=demo-cluster
+kubectl config use-context demo-system
+kubectl get nodes
+```
+
+## Find and restore a deleted file in a Git repository
+
+```bash
+git checkout $(git rev-list -n 1 HEAD -- "$file")^ -- "$file"
+```
