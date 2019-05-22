@@ -56,3 +56,25 @@ spec:
     image: busybox
     command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
 ```
+
+To create, modify or delete Kubernetes objects, users need to interact with Kubernetes cluster via Kubernetes API. Kubernetes tool like kubectl is also optional, in that case, the CLI makes the necessary Kubernetes API calls for you. For example, the command **kubclt describe pods podA** is going to send **GET /api/v1/namespaces/{namespace}/pods/{name}/status** actually.
+
+Users must set up proper credentials before they use kubectl command line or invoke Kubernetes API. In kubectl tool, a set of credentials is stored as Secrets, which is in Kubernetes object format and mounted into pods allowing in-cluster processes to talk to the Kubernetes API.
+
+Kubernetes also supports other methods to authenticate API requests including client certificates, bearer tokens, authenticating proxy or HTTP basic auth.
+
+For example, if the flag **--enable-bootstrap-token-auth** is enabled, then bearer token credentials will be implemented to authenticate requests against the API server. The header **Authorization: Bearer 07401b.f395accd246ae52d** in HTTP request will take effect.
+
+## Continuous Deployment for Kubernetes
+
+Continuous deployment is a software development practice where code changes are automatically deployed to production without explicit approval. A typical continuous deployment process for containerized java application running on Kubernetes can be described in following architecture.
+
+![CICD](https://s3.amazonaws.com/ascending-devops/ascending-conf/CICD.png)
+
+Every time developers push source code (to GitHub or other source code repository), it will go through unit testing (connection to test database), packaging (then store artifacts like war file in S3), image building (then push image to docker repository) and deployment stages. The deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
+
+## Essential Part: Updating Pod Command through API or Kubectl
+
+For architecture above, the test, packaging and image building steps can be fulfilled by CodeBuild service. CodeBuild a serverless containerized application that runs a few Linux commands in given docker image. AWS also provides serverless Lambda function, which invokes a given function in predefined runtime (e.g. python, Go, java).
+
+In deployment stage, either CodeBuild or Lambda function can be used, which is going to correspond to two interaction methods with Kubernetes cluster, Kubectl tool and Kubernetes API. 
