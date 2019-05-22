@@ -23,3 +23,14 @@ AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](htt
 | Customized Kubernetes Platform | No | Kubernetes Object yaml | Yes | $ |
 | ECS | Yes | CloudFormation template | No | $$ |
 | EKS | Yes | CloudFormation Template for cluster, Kubernetes Object yaml | Yes | $$$ |
+
+## Customized Kubernetes Platform in AWS
+
+Kops is a tool that automates the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including security group, subnet and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS. Then run 
+kubectl get pods, and following result will be returned.
+
+![kube_node](https://s3.amazonaws.com/ascending-devops/ascending-conf/kube_node.png)
+
+A standard Kubernetes Cluster has one master node and at least one worker nodes. Kubernetes master covers controller-manager, API server, scheduler and some other functions, while nodes maintains running pods and provides the Kubernetes runtime environment.
+
+![kube-architecture](https://d33wubrfki0l68.cloudfront.net/e298a92e2454520dddefc3b4df28ad68f9b91c6f/70d52/images/docs/pre-ccm-arch.png)
