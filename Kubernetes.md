@@ -34,3 +34,25 @@ kubectl get pods, and following result will be returned.
 A standard Kubernetes Cluster has one master node and at least one worker nodes. Kubernetes master covers controller-manager, API server, scheduler and some other functions, while nodes maintains running pods and provides the Kubernetes runtime environment.
 
 ![kube-architecture](https://d33wubrfki0l68.cloudfront.net/e298a92e2454520dddefc3b4df28ad68f9b91c6f/70d52/images/docs/pre-ccm-arch.png)
+
+In AWS, one single EC2 instance can work either as a master or node server.
+
+## Kubectl Tool and Kubernetes API
+
+In Kubernetes, the state of cluster, including the containerized applications running situation, available resources and applications behave policies, upgrades, and fault-tolerance, can be represented by Kubernetes object. 
+
+A Kubernetes object is purpose-oriented, yaml-styled and status-granted concept in Kubernetes system. A typical Kubernetes object can be seen below
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
+```
