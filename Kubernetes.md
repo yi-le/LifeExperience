@@ -1,28 +1,30 @@
 ![ascending logo](https://ascendingdc.com/images/WechatIMG116.jpg) ![apn logo](https://ascendingdc.com/images/aws.png)
 
-# Continuous Deploy to Kubernetes using AWS CodePipeline
+# Continuous Deployment on Kubernetes Platform using AWS CodePipeline
 
 In this article:
-- Kubernetes Introduction and Comparison with ECS
+- Intro to Kubernetes
 - Build Kubernetes Cluster with Nodes in AWS via kops
 - Kubectl and API, Credentials and Its subcommands
 - Architecture: Continuous Deployment to Kubernetes
 - Essential Part: Updating Pod Command through API
 - Conclusion
 
-## Kubernetes Introduction and Comparison with ECS
+## Kubernetes? Why?
 
-Kubernetes is a portable, extensible open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. Kubernetes uses persistent entities to represent the state of cluster in .yaml format. Thus, all of the tasks can be managed in a more consistent way, no matter it’s in on-promise server, cloud computing platform or hybrid cloud environment.
+Kubernetes is a portable, extensible open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. Kubernetes uses persistent entities to represent the state of cluster in *.yaml* format. Thus, all of the tasks can be managed in a more consistent way, no matter it’s in on-promise server, cloud computing platform or hybrid cloud environment.
 
-AWS provides Elastic Container Service (Amazon ECS) as a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster. ECS components (e.g. services, tasks) can be defined in .yaml format within CloudFormation template, which follows Infrastructure as code process.
+AWS provides Elastic Container Service (Amazon ECS) as a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster. ECS components (e.g. services, tasks) can be defined as *.yaml* format within CloudFormation template.
 
-AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html)) last year. It’s a managed service that makes it easy for users to run Kubernetes on AWS without needing to stand up or maintain their own Kubernetes control plane.
+AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html)) in 2018. It’s a managed service that makes it easy for users to run Kubernetes on AWS without needing to stand up or maintain their own Kubernetes control plane.
 
-| | Serverless Cluster | Infrastructure as code | Consistency in Hybrid Cloud Environment | Cost |
-| --- | --- | --- | --- | --- |
-| Customized Kubernetes Platform | No | Kubernetes Object yaml | Yes | $ |
-| ECS | Yes | CloudFormation template | No | $$ |
-| EKS | Yes | CloudFormation Template for cluster, Kubernetes Object yaml | Yes | $$$ |
+| | ECS | Kubernetest Platform in AWS | EKS |
+| --- | --- | --- | --- |
+| Application Scalability Constructs | Applications can be defined using task definitions written in YAML. Tasks are instantiations of task definitions and can be scaled up or down manually. | Each application tier is defined as a pod and can be scaled when managed by a deployment, which is specified declaratively, e.g., in YAML. | Each application will be defined and scaled in the level of pods and EC2 instances. |
+| High Availability | Deployments allow pods to be distributed among nodes to provide HA, thereby tolerating infrastructure or application failures. | Schedulers place tasks, which are comprised of 1 or more containers, on EC2 container instances. | AWS provides the HA of EKS cluster, while developers can enhance the availability of worker nodes by implementing multi-AZ. | 
+| Interoperability | Amazon ECS is tightly integrated with other Amazon services, it relies on other Amazon services, such as Identity and Access Management (IAM), Domain Name System (Route 53), Elastic Load Balancing (ELB), and EC2. | Kubernetes can be either on on-premise servers, AWS or mixed cloud environment. It can be interacted, but not neccessarily, with 
+cloud resources | The EKS cluster relies on AWS (including subnet, security groups and IAM) |
+| 
 
 ## Customized Kubernetes Platform in AWS
 
