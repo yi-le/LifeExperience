@@ -3,14 +3,14 @@
 # Continuous Deployment on Kubernetes Platform using AWS CodePipeline
 
 In this article:
-- Intro to Kubernetes
+- Why Kubernetes
 - Build Kubernetes Cluster with Nodes in AWS via kops
 - Kubectl and API, Credentials and Its subcommands
 - Architecture: Continuous Deployment to Kubernetes
 - Essential Part: Updating Pod Command through API
 - Conclusion
 
-## Kubernetes? Why?
+## Why Kubernetes
 
 Kubernetes is a portable, extensible open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. Kubernetes uses persistent entities to represent the state of cluster in *.yaml* format. Thus, all of the tasks can be managed in a more consistent way, no matter it’s in on-promise server, cloud computing platform or hybrid cloud environment.
 
@@ -22,9 +22,9 @@ AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](htt
 | --- | --- | --- | --- |
 | Application Scalability Constructs | Applications can be defined using task definitions written in YAML. Tasks are instantiations of task definitions and can be scaled up or down manually. | Each application tier is defined as a pod and can be scaled when managed by a deployment, which is specified declaratively, e.g., in YAML. | Each application will be defined and scaled in the level of pods and EC2 instances. |
 | High Availability | Deployments allow pods to be distributed among nodes to provide HA, thereby tolerating infrastructure or application failures. | Schedulers place tasks, which are comprised of 1 or more containers, on EC2 container instances. | AWS provides the HA of EKS cluster, while developers can enhance the availability of worker nodes by implementing multi-AZ. | 
-| Interoperability | Amazon ECS is tightly integrated with other Amazon services, it relies on other Amazon services, such as Identity and Access Management (IAM), Domain Name System (Route 53), Elastic Load Balancing (ELB), and EC2. | Kubernetes can be either on on-premise servers, AWS or mixed cloud environment. It can be interacted, but not neccessarily, with 
-cloud resources | The EKS cluster relies on AWS (including subnet, security groups and IAM) |
-| 
+| Interoperability | Amazon ECS is tightly integrated with other Amazon services, it relies on other Amazon services, such as Identity and Access Management (IAM), Domain Name System (Route 53), Elastic Load Balancing (ELB), and EC2. | Kubernetes can be either on on-premise servers, AWS or mixed cloud environment. It can be interacted, but not neccessarily, with cloud resources | The EKS cluster relies on AWS (including subnet, security groups and IAM) |
+| Rolling Application Upgrades and Rollback | Rolling updates are supported using "minimumHealthyPercent" and "maximumPercent" parameters. | A deployment  supports both "rolling-update" and "recreate" strategies. Rolling updates can specify maximum number of pods. | Same as regular Kubernetest platform |
+| Disadvantages | ECS is not publicly available for deployment outside Amazon, which means it can not be implemented in hybrid cloud environment | The installation process is complex (fortunately we have [Kops](https://github.com/kubernetes/kops)) | Easy to use, but not cost-effective |
 
 ## Customized Kubernetes Platform in AWS
 
