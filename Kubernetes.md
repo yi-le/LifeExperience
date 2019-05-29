@@ -5,7 +5,7 @@
 In this article:
 - Why Kubernetes
 - Create Kubernetes Platform in AWS
-- Kubectl and API, Credentials and Its subcommands
+- Kubectl Tool and Kubernetes API
 - Architecture: Continuous Deployment to Kubernetes
 - Essential Part: Updating Pod Command through API
 - Conclusion
@@ -60,7 +60,10 @@ spec:
   containers:
   - name: myapp-container
     image: busybox
-    command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
+    command: ['sh', '-c', 'echo ${DEMO_GREETING} && sleep 3600']
+    env:
+    - name: DEMO_GREETING
+      value: "Hello Kubernetes!"
 ```
 
 To create, modify or delete Kubernetes objects, users need to interact with Kubernetes cluster via Kubernetes API. Kubernetes tool like kubectl is also optional, in that case, the CLI makes the necessary Kubernetes API calls for you. For example, the command **kubclt describe pods podA** is going to send **GET /api/v1/namespaces/{namespace}/pods/{name}/status** actually.
@@ -72,6 +75,36 @@ Kubernetes also supports other methods to authenticate API requests including cl
 For example, if the flag **--enable-bootstrap-token-auth** is enabled, then bearer token credentials will be implemented to authenticate requests against the API server. The header **Authorization: Bearer 07401b.f395accd246ae52d** in HTTP request will take effect.
 
 ## Continuous Deployment for Kubernetes
+
+In Kubernetes, a Deployment object describes state in a Deployment object, and the Deployment controller changes the actual state to the desired state at a controlled rate. A typical Deployment object can be found below
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp-container
+        image: busybox
+        command: ['sh', '-c', 'echo ${DEMO_GREETING} && sleep 3600']
+        env:
+        - name: DEMO_GREETING
+          value: "Hello Kubernetes!"
+```
+
+The deployment of containerized application in Kubernetes is intrinsically the change from status A to status B in Kubernetes Deployment object. 
 
 Continuous deployment is a software development practice where code changes are automatically deployed to production without explicit approval. A typical continuous deployment process for containerized java application running on Kubernetes can be described in following architecture.
 
