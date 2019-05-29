@@ -4,7 +4,7 @@
 
 In this article:
 - Why Kubernetes
-- Build Kubernetes Cluster with Nodes in AWS via kops
+- Create Kubernetes Platform in AWS
 - Kubectl and API, Credentials and Its subcommands
 - Architecture: Continuous Deployment to Kubernetes
 - Essential Part: Updating Pod Command through API
@@ -26,10 +26,14 @@ AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](htt
 | Rolling Application Upgrades and Rollback | Rolling updates are supported using "minimumHealthyPercent" and "maximumPercent" parameters. | A deployment  supports both "rolling-update" and "recreate" strategies. Rolling updates can specify maximum number of pods. | Same as regular Kubernetest platform |
 | Disadvantages | ECS is not publicly available for deployment outside Amazon, which means it can not be implemented in hybrid cloud environment | The installation process is complex (fortunately we have [Kops](https://github.com/kubernetes/kops)) | Easy to use, but not cost-effective |
 
-## Customized Kubernetes Platform in AWS
+## Create Kubernetes Platform in AWS
 
-Kops is a tool that automates the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including security group, subnet and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS. Then run 
-kubectl get pods, and following result will be returned.
+Kops is a tool which can automate the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including security group, subnet and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS, install and configure **kubectl**. Then try
+
+```bash 
+kubectl get pods
+```
+Following result will be returned.
 
 ![kube_node](https://s3.amazonaws.com/ascending-devops/ascending-conf/kube_node.png)
 
