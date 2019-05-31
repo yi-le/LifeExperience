@@ -7,8 +7,8 @@ In this article:
 - Create Kubernetes Platform in AWS
 - Kubectl Tool and Kubernetes API
 - Architecture: Continuous Deployment to Kubernetes
-- Essential Part: Updating Pod Command through API
-- Conclusion
+- Essential Part: Deploy New Version through Kubernetes API or Kubectl
+- Comparision Between Codebuild and Lambda
 
 ## Why Kubernetes
 
@@ -112,8 +112,16 @@ Continuous deployment is a software development practice where code changes are 
 
 Every time developers push source code (to GitHub or other source code repository), it will go through unit testing (connection to test database), packaging (then store artifacts like war file in S3), image building (then push image to docker repository) and deployment stages. The deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
 
-## Essential Part: Updating Pod Command through API or Kubectl
+## Essential Part: Deploy New Version through Kubernetes API or Kubectl
 
-For architecture above, the test, packaging and image building steps can be fulfilled by CodeBuild service. CodeBuild a serverless containerized application that runs a few Linux commands in given docker image. AWS also provides serverless Lambda function, which invokes a given function in predefined runtime (e.g. python, Go, java).
+It's optional that the test, packaging and image building stages can be fulfilled by CodeBuild service. CodeBuild a serverless service that runs a few Linux commands in in docker container based on given image . AWS also provides Lambda function, another serverless service, which invokes a given function in a predefined programming language (e.g. python, Go, java).
 
 In deployment stage, either CodeBuild or Lambda function can be used, which is going to correspond to two interaction methods with Kubernetes cluster, Kubectl tool and Kubernetes API. 
+
+### Demo: Implement CodeBuild in Deployment Stage
+
+In the second part of this article, a new Kubernetes cluster with one slave node server has been created. Create a *yaml* file named **sample_deployment.yaml**, and its content can be found [here](https://github.com/yi-le/LifeExperience/blob/master/sample_deployment.yaml).
+
+### Demo: Implement Lambda in Deployment Stage
+
+## Comparision Between Codebuild and Lambda
