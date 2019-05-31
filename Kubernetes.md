@@ -122,6 +122,22 @@ In deployment stage, either CodeBuild or Lambda function can be used, which is g
 
 In the second part of this article, a new Kubernetes cluster with one slave node server has been created. Create a *yaml* file named **sample_deployment.yaml**, and its content can be found [here](https://github.com/yi-le/LifeExperience/blob/master/sample_deployment.yaml).
 
+Then run following command
+
+```bash
+kubectl create -f sample_deployment.yaml
+```
+
+Next
+
+```bash
+kubectl get pods | grep myapp-deployment
+```
+
+Such result will be returned
+
+![PodName](https://ascending-devops.s3.amazonaws.com/ascending-conf/PodName.png)
+
 ### Demo: Implement Lambda in Deployment Stage
 
 ## Comparision Between Codebuild and Lambda
