@@ -13,7 +13,7 @@ Java Basic Lesson:
 - Use What We Have Leanred to Solve More Easy Algorithm Questions
 
 |Lecture|Content|
------------------
+|-------|-------|
 |1|Basic Architecture: Application, Network and Tools|
 |2|Object Oriented Programing and MVC|
 |3|Database and Restful API|
