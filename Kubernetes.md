@@ -123,21 +123,80 @@ In deployment stage, either CodeBuild or Lambda function can be used, which is g
 In the second part of this article, a new Kubernetes cluster with one slave node server has been created. Create a *yaml* file named **sample_deployment.yaml**, and its content can be found [here](https://github.com/yi-le/LifeExperience/blob/master/sample_deployment.yaml).
 
 Then run following command
-
 ```bash
 kubectl create -f sample_deployment.yaml
 ```
-
 Next
-
 ```bash
 kubectl get pods | grep myapp-deployment
 ```
-
 Such result will be returned
-
 ![PodName](https://ascending-devops.s3.amazonaws.com/ascending-conf/PodName.png)
+The pod name can be found in result, then run
+```bash
+kubectl logs ${POD_NAME}
+```
+and you will see "Hello Kubernetes!" in the terminal.
+After that we can try to update the environment variable DEMO_GREETING, and this behavior can be regarded as a new version deployment.
+```bash
+kubectl set env deployment/myapp-deployment DEMO_GREETING='Another Hello Kubernetes!'
+```
+Immediately run
+```bash
+kubectl get pods | grep myapp-deployment
+```
+It can be observed that two pods are terminating while two new pods are being launched, copy the new pod name and then
+```bash
+kubectl logs ${POD_NAME}
+```
+"Another Hello Kubernetes!" will be returned, which indicates the completion of deployment.
+
+In AWS CloudFormation, this CodeBuild process can be defined in *yaml* format.
+
+```yaml
+Deployment:
+  Type: AWS::CodeBuild::Project
+  Properties:
+    Artifacts:
+      Type: no_artifacts
+    Description: update environment variables
+    Environment: 
+      ComputeType: BUILD_GENERAL1_SMALL
+      Image: aws/codebuild/standard:1.0
+      Type: LINUX_CONTAINER
+    Name: Deployment
+    ServiceRole: !Ref CodeBuildRole
+    Source: 
+      BuildSpec: |
+        version: 0.2
+        phases:
+          install:
+            commands:
+              - curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/kubectl
+              - chmod +x ./kubectl
+              - mkdir -p /root/bin
+              - cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+              - curl -o heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
+              - chmod +x ./heptio-authenticator-aws
+              - cp ./heptio-authenticator-aws $HOME/bin/heptio-authenticator-aws && export PATH=$HOME/bin:$PATH
+          pre_build:
+            commands:
+              - mkdir -p ~/.kube
+              # upload the ~/.kube/config file in S3, then retrieve it from S3 and save as ~/.kube/config
+              - aws s3 cp s3://example-bucket/config ~/.kube/config
+              - export KUBECONFIG=$KUBECONFIG:~/.kube/config
+          build:
+            commands:
+              - kubectl set env deployment/myapp-deployment DEMO_GREETING='Another Hello Kubernetes!' --kubeconfig ~/.kube/config
+      GitCloneDepth: 1
+      Location: https://github.com/user/example.git
+      Type: GITHUB
+```
 
 ### Demo: Implement Lambda in Deployment Stage
+```bash
+TOKEN=$(kubectl get secret $SECRET_NAME -o jsonpath='{.data.token}' | base64 --decode)
+echo $TOKEN
+```
 
 ## Comparision Between Codebuild and Lambda
