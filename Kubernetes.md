@@ -209,4 +209,30 @@ Next, store the token in [AWS Systems Manager Parameter Store](https://docs.aws.
 
 ![AWS Systems Manager Parameter Store](https://ascending-devops.s3.amazonaws.com/ascending-conf/AWS_Systems_Manager_Parameter_Store.png)
 
+It's essential that a cluster role binding is created to allow cluster API to be invoked. Create following file and named it as **fabric8-rbac.yaml**
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: fabric8-rbac
+subjects:
+  - kind: ServiceAccount
+    # Reference to upper's `metadata.name`
+    name: default
+    # Reference to upper's `metadata.namespace`
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+Then
+```bash
+kubectl create -f fabric8-rbac.yaml
+```
+
+All set, we can edit the lambda function now.
+
+
 ## Comparision Between Codebuild and Lambda
