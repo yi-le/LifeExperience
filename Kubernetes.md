@@ -307,6 +307,6 @@ Both CodeBuild and Lambda function can be implemented in deployment stage, the c
 |Difficulty|Easy|Medium|
 |Flexibility|Medium|High|
 |Effecency|Low|High|
-|Overall Score|:star::star::star:|:star::star::star::star::star::star:|
+|Overall Score|:star::star::star:|:star::star::star::star::star:|
 
 Don't hesitate to contact us if you have any question for our blog and service!
