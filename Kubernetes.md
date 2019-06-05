@@ -8,7 +8,7 @@ In this article:
 - Kubectl Tool and Kubernetes API
 - Architecture: Continuous Deployment to Kubernetes
 - Essential Part: Deploy New Version through Kubernetes API or Kubectl
-- Comparision Between Codebuild and Lambda
+- Comparision Between CodeBuild and Lambda
 
 ## Why Kubernetes
 
@@ -232,7 +232,81 @@ Then
 kubectl create -f fabric8-rbac.yaml
 ```
 
-All set, we can edit the lambda function now.
+All set, we can edit the lambda function now. In our case, the host site of Kubernetes cluster (http://localhost if run Kubernetes locally) is stored as environment variable
 
+```python 
+import requests
+import json
+import boto3
+import os
 
-## Comparision Between Codebuild and Lambda
+client = boto3.client('ssm')
+response = client.get_parameter(Name='k8s-bear-token')
+url = os.environ['k8s_cluster']+'/apis/apps/v1/namespaces/default/deployments/example-deployment'
+headers = {'Content-Type':'application/json', 'Authorization':'Bearer '+response['Parameter']['Value']}
+body = {
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "example-deployment",
+    "labels": {
+      "app": "example"
+    }
+  },
+  "spec": {
+    "replicas": 2,
+    "selector": {
+      "matchLabels": {
+        "app": "example"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "example"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "example-container",
+            "image": "busybox",
+            "command": [
+              "sh",
+              "-c",
+              "echo ${DEMO_GREETING} && sleep 3600"
+            ],
+            "env": [
+              {
+                "name": "DEMO_GREETING",
+                "value": "Another Hello Kubernetes!"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+body = json.dumps(body)
+
+def lambda_handler(event, context):
+  r = requests.put(url, headers=headers,verify=False,data=body)
+  return r
+```
+
+This lambda can be invoked in deployment stage of codepipeline, with bear token stored in AWS System Patameter and cluster host site stored as environment variable to keep security. Developers are able to define customized parameters in codepipeline event, in case that deployment commands contain a commit hash, time or other variables.
+
+## Comparision Between CodeBuild and Lambda
+
+Both CodeBuild and Lambda function can be implemented in deployment stage, the comparision between them can be seen below
+
+| | CodeBuild | Lambda |
+|---|---|---|
+|Security|Medium|Strong|
+|Difficulty|Easy|Medium|
+|Flexibility|Medium|High|
+|Effecency|Low|High|
+|Overall Score|:star:|:star:|
+
+Don't hesitate to contact us if you have any question for our blog and service!
