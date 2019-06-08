@@ -70,7 +70,7 @@ spec:
       value: "Hello Kubernetes!"
 ```
 
-### Kubclt Commandline
+### Commandline Kubectl 
 
 For example, for a developer to describe a particular pod in kubernetes cluster.
 ```bash
@@ -78,7 +78,7 @@ kubclt describe pods podA
 ```
 
 ### Kubernetes API
-The commandline is actually going to send follow api, which we can directly invoke.
+Last command is actually going to send following api request to cluster, which we can directly invoke.
 
 ```bash
 curl -X GET --header "Authorization: Bearer {actualToken}" /api/v1/namespaces/{namespace}/pods/{name}/status
