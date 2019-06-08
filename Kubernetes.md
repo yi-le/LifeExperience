@@ -28,7 +28,7 @@ AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](htt
 
 ## Use Kops to create and maintain Kubernetes Cluster in AWS
 
-Kops is a tool which can automate the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including [security group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html), subnet and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS, install and configure **kubectl**. Then try
+Kops is a tool which can automate the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including [security group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html), [subnet](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html) and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS, install and configure **kubectl**. Then try
 
 ```bash 
 kubectl get pods
@@ -43,7 +43,11 @@ A standard Kubernetes Cluster has one master node and at least one worker nodes.
 
 In AWS, one single EC2 instance can work either as a master or node server.
 
-## Kubectl Tool and Kubernetes API
+## Interact with Kubernetes cluster
+
+To create, modify or delete Kubernetes objects, users need to interact with Kubernetes cluster via Kubernetes API. Kubernetes tool like kubectl is also an option, in that case, the CLI makes the necessary Kubernetes API calls for you.
+
+### Kubernetes object(Example)
 
 In Kubernetes, the state of cluster, including the containerized applications running situation, available resources and applications behave policies, upgrades, and fault-tolerance, can be represented by Kubernetes object. 
 
@@ -66,9 +70,32 @@ spec:
       value: "Hello Kubernetes!"
 ```
 
-To create, modify or delete Kubernetes objects, users need to interact with Kubernetes cluster via Kubernetes API. Kubernetes tool like kubectl is also optional, in that case, the CLI makes the necessary Kubernetes API calls for you. For example, the command **kubclt describe pods podA** is going to send **GET /api/v1/namespaces/{namespace}/pods/{name}/status** actually.
+### Kubclt Commandline
+
+For example, for a developer to describe a particular pod in kubernetes cluster.
+```bash
+kubclt describe pods podA
+```
+
+### Kubernetes API
+The commandline is actually going to send follow api, which we can directly invoke.
+
+```bash
+curl -X GET --header "Authorization: Bearer {actualToken}" /api/v1/namespaces/{namespace}/pods/{name}/status
+```
+
+### Kubernetes Credentials
 
 Users must set up proper credentials before they use kubectl command line or invoke Kubernetes API. In kubectl tool, a set of credentials is stored as Secrets, which is in Kubernetes object format and mounted into pods allowing in-cluster processes to talk to the Kubernetes API.
+
+Run this command to find the name of secret.
+```bash
+kubectl get secret
+```
+Replace $SECRET_NAME with the NAME of secret in result.
+```bash
+kubectl get secret $SECRET_NAME -o jsonpath='{.data.token}' | base64 --decode
+```
 
 Kubernetes also supports other methods to authenticate API requests including client certificates, bearer tokens, authenticating proxy or HTTP basic auth.
 
