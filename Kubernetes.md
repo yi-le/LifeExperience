@@ -3,14 +3,14 @@
 # Continuous Deployment on Kubernetes Platform using AWS CodePipeline
 
 In this article:
-- Why Kubernetes
+- Kubernetes vs ECS vs EKS
 - Create Kubernetes Platform in AWS
 - Kubectl Tool and Kubernetes API
 - Architecture: Continuous Deployment to Kubernetes
 - Essential Part: Deploy New Version through Kubernetes API or Kubectl
 - Comparision Between CodeBuild and Lambda
 
-## Why Kubernetes
+## Kubernetes vs ECS vs EKS
 
 Kubernetes is a portable, extensible open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. Kubernetes uses persistent entities to represent the state of cluster in *.yaml* format. Thus, all of the tasks can be managed in a more consistent way, no matter it’s in on-promise server, cloud computing platform or hybrid cloud environment.
 
@@ -26,9 +26,9 @@ AWS also released Amazon Elastic Container Service for Kubernetes ([AWS EKS](htt
 | Rolling Application Upgrades and Rollback | Rolling updates are supported using "minimumHealthyPercent" and "maximumPercent" parameters. | A deployment  supports both "rolling-update" and "recreate" strategies. Rolling updates can specify maximum number of pods. | Same as regular Kubernetest platform |
 | Disadvantages | ECS is not publicly available for deployment outside Amazon, which means it can not be implemented in hybrid cloud environment | The installation process is complex (fortunately we have [Kops](https://github.com/kubernetes/kops)) | Easy to use, but not cost-effective |
 
-## Create Kubernetes Platform in AWS
+## Use Kops to create and maintain Kubernetes Cluster in AWS
 
-Kops is a tool which can automate the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including security group, subnet and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS, install and configure **kubectl**. Then try
+Kops is a tool which can automate the provisioning of Kubernetes clusters in AWS. Users can either create new AWS resources including [security group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html), subnet and SSH key pair or using existing AWS resources. [Kops](https://github.com/kubernetes/kops) is a free, open source tool, and users only pay for AWS resources like EC2 instances, NAT gateway and load balancer. Please refer [this article](https://github.com/kubernetes/kops/blob/master/docs/aws.md) to distribute Kubernetes master and slave servers in AWS, install and configure **kubectl**. Then try
 
 ```bash 
 kubectl get pods
