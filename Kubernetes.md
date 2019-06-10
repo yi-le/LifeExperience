@@ -84,7 +84,7 @@ Last command is actually going to send following api request to cluster, which w
 curl -X GET --header "Authorization: Bearer {actualToken}" /api/v1/namespaces/{namespace}/pods/{name}/status
 ```
 
-### Kubernetes Credentials
+(### Kubernetes-Credentials)
 
 Users must set up proper credentials before they use kubectl command line or invoke Kubernetes API. In kubectl tool, a set of credentials is stored as Secrets, which is in Kubernetes object format and mounted into pods allowing in-cluster processes to talk to the Kubernetes API.
 
@@ -178,8 +178,8 @@ It can be observed that two pods are terminating while two new pods are being la
 kubectl logs ${POD_NAME}
 ```
 "Another Hello Kubernetes!" will be returned, which indicates the completion of deployment.
-### Create Kubernetes Deployment step in CodeBuild
-In AWS CloudFormation, we can define similar step in CodeBuild as following *yaml* format.
+### Deploy Kubernetes pod continously in CodeBuild
+In AWS CloudFormation, we can define similar step in CodeBuild as following *yaml* format. *insert ryo's comments point3*
 
 ```yaml
 Deployment:
@@ -221,18 +221,10 @@ Deployment:
       Type: GITHUB
 ```
 
-### Demo: Implement Lambda in Deployment Stage
+### Deploy Kubernetes pod continously in Lambda function
 
-To impement Lambda function in Codepipeline process, a bear token should be retrieved and stored. An HTTP request will be made within Lambda function, and sent to Kubernetes cluster to trigger a new deployment.
+To impement Lambda function in Codepipeline process, a bearer token should be retrieved and stored according to here. An HTTP request will be made within Lambda function, and sent to Kubernetes cluster to trigger a new deployment.
 
-Run this command to find the name of secret.
-```bash
-kubectl get secret
-```
-Replace $SECRET_NAME with the NAME of secret in result.
-```bash
-kubectl get secret $SECRET_NAME -o jsonpath='{.data.token}' | base64 --decode
-```
 Next, store the token in [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). In this case, the token is named as k8s-bear-token.
 
 ![AWS Systems Manager Parameter Store](https://ascending-devops.s3.amazonaws.com/ascending-conf/AWS_Systems_Manager_Parameter_Store.png)
