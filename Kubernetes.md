@@ -81,8 +81,10 @@ kubclt describe pods podA
 Last command is actually going to send following api request to cluster, which we can directly invoke.
 
 ```bash
-curl -X GET --header "Authorization: Bearer {actualToken}" /api/v1/namespaces/{namespace}/pods/{name}/status
+curl -X GET --header "Authorization: Bearer ${actualToken}" ${HOST_SITE}/api/v1/namespaces/{namespace}/pods/{name}/status
 ```
+
+Please refer [this document](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.14/) for a full list of Kubernetes API.
 
 ### Kubernetes Credentials <a name="kubernetes-credentials"></a>
 
@@ -137,7 +139,12 @@ Continuous deployment is a software development practice where code changes are 
 
 ![CICD](https://s3.amazonaws.com/ascending-devops/ascending-conf/CICD.png)
 
-Every time developers push source code (to GitHub or other source code repository), it will go through unit testing (connection to test database), packaging (then store artifacts like war file in S3), image building (then push image to docker repository) and deployment stages. The deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
+A typical Continuous Deployment process usually contains following stage:
+1. Source: Retrieve source code from GitHub or other source code repository.
+2. Test: Connect to test database to do unit test, this stage may happen before or after Build Stage.
+3. Build: Build **.war** file, docker image or other types of artifacts and store it to S3, ECR or directly transmit it to next stage.
+4. Deployment: Deploy the most current version to running application. In this stage, the deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
+5. Monitor: The status of each stage and health of application will be monitored and alarmed during the whole CI/CD process.
 
 ## Serverless CI/CD with Codepipeline
 
