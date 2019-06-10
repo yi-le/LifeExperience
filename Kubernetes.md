@@ -84,7 +84,7 @@ Last command is actually going to send following api request to cluster, which w
 curl -X GET --header "Authorization: Bearer {actualToken}" /api/v1/namespaces/{namespace}/pods/{name}/status
 ```
 
-(### Kubernetes-Credentials)
+###Kubernetes Credentials <a name="kubernetes-credentials"></a>
 
 Users must set up proper credentials before they use kubectl command line or invoke Kubernetes API. In kubectl tool, a set of credentials is stored as Secrets, which is in Kubernetes object format and mounted into pods allowing in-cluster processes to talk to the Kubernetes API.
 
@@ -223,7 +223,7 @@ Deployment:
 
 ### Deploy Kubernetes pod continously in Lambda function
 
-To impement Lambda function in Codepipeline process, a bearer token should be retrieved and stored according to here. An HTTP request will be made within Lambda function, and sent to Kubernetes cluster to trigger a new deployment.
+To implement Lambda function in Codepipeline process, a bearer token should be retrieved and stored according to [here](#kubernetes-credentials). An HTTP request will be made within Lambda function, and sent to Kubernetes cluster to trigger a new deployment.
 
 Next, store the token in [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). In this case, the token is named as k8s-bear-token.
 
