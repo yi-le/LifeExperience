@@ -84,7 +84,7 @@ Last command is actually going to send following api request to cluster, which w
 curl -X GET --header "Authorization: Bearer {actualToken}" /api/v1/namespaces/{namespace}/pods/{name}/status
 ```
 
-###Kubernetes Credentials <a name="kubernetes-credentials"></a>
+### Kubernetes Credentials <a name="kubernetes-credentials"></a>
 
 Users must set up proper credentials before they use kubectl command line or invoke Kubernetes API. In kubectl tool, a set of credentials is stored as Secrets, which is in Kubernetes object format and mounted into pods allowing in-cluster processes to talk to the Kubernetes API.
 
