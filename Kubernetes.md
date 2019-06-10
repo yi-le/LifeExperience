@@ -225,10 +225,12 @@ Deployment:
 
 To implement Lambda function in Codepipeline process, a bearer token should be retrieved and stored according to [here](#kubernetes-credentials). An HTTP request will be made within Lambda function, and sent to Kubernetes cluster to trigger a new deployment.
 
-Next, store the token in [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). In this case, the token is named as k8s-bear-token.
+#### Mask credentials with AWS Systems Manager Parameter
+In most of case, we shouldn't write credentials or token in plain text. We can use [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). In this case, the token is named as k8s-bear-token.
 
 ![AWS Systems Manager Parameter Store](https://ascending-devops.s3.amazonaws.com/ascending-conf/AWS_Systems_Manager_Parameter_Store.png)
 
+#### Create a role to invoke Kubernetes API
 It's essential that a cluster role binding is created to allow cluster API to be invoked. Create following file and named it as **fabric8-rbac.yaml**
 
 ```yaml
@@ -247,12 +249,12 @@ roleRef:
   name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
 ```
-Then
+Deploy above role object
 ```bash
 kubectl create -f fabric8-rbac.yaml
 ```
 
-All set, we can edit the lambda function now. In our case, the host site of Kubernetes cluster (http://localhost if run Kubernetes locally) is stored as environment variable
+We can compose a lambda function now. In our case, the host site of Kubernetes cluster (http://localhost if run Kubernetes locally) is stored as environment variable ***k8s_cluster***
 
 ```python 
 import requests
