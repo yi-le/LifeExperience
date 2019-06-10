@@ -140,11 +140,11 @@ Continuous deployment is a software development practice where code changes are 
 ![CICD](https://s3.amazonaws.com/ascending-devops/ascending-conf/CICD.png)
 
 A typical Continuous Deployment process usually contains following stage:
-1. Source: Retrieve source code from GitHub or other source code repository.
-2. Test: Connect to test database to do unit test, this stage may happen before or after Build Stage.
-3. Build: Build **.war** file, docker image or other types of artifacts and store it to S3, ECR or directly transmit it to next stage.
-4. Deployment: Deploy the most current version to running application. In this stage, the deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
-5. Monitor: The status of each stage and health of application will be monitored and alarmed during the whole CI/CD process.
+1. **Source**: Retrieve source code from GitHub or other source code repository.
+2. **Test**: Connect to test database to do unit test, this stage may happen before or after Build Stage.
+3. **Build**: Build **.war** file, docker image or other types of artifacts and store it to S3, ECR or directly transmit it to next stage.
+4. **Deployment**: Deploy the most current version to running application. In this stage, the deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
+5. **Monitor**: The status of each stage and health of application will be monitored and alarmed during the whole CI/CD process.
 
 ## Serverless CI/CD with Codepipeline
 
