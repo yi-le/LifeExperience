@@ -139,9 +139,10 @@ Continuous deployment is a software development practice where code changes are 
 
 Every time developers push source code (to GitHub or other source code repository), it will go through unit testing (connection to test database), packaging (then store artifacts like war file in S3), image building (then push image to docker repository) and deployment stages. The deployment strategy can be **Rolling, Immutable or Blue/Green**, which grants the application will have zero downtime for users.
 
-## Essential Part: Deploy New Version through Kubernetes API or Kubectl
+## Serverless CI/CD with Codepipeline
 
-It's optional that the test, packaging and image building stages can be fulfilled by CodeBuild service. CodeBuild a serverless service that runs a few Linux commands in in docker container based on given image . AWS also provides Lambda function, another serverless service, which invokes a given function in a predefined programming language (e.g. python, Go, java).
+Every orgnization use their favorite tool such as jenkins or teamcity to manage continous integration and continous delivery. We found codepipeline is particularly powerful with seamless integration to most of AWS services, on top of that we don't have to manage infrastructure as jenkins.
+We use codepipeline in the test, packaging and image building stages for entire CI/CD pipeline. CodeBuild a serverless container service that allow to run a few Linux commands in docker container. AWS also provides Lambda function, another serverless service, which invokes a given function in a predefined programming language (e.g. python, Go, java).
 
 In deployment stage, either CodeBuild or Lambda function can be used, which is going to correspond to two interaction methods with Kubernetes cluster, Kubectl tool and Kubernetes API. 
 
