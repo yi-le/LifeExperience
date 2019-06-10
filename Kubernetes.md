@@ -146,7 +146,7 @@ We use codepipeline in the test, packaging and image building stages for entire 
 
 In deployment stage, either CodeBuild or Lambda function can be used, which is going to correspond to two interaction methods with Kubernetes cluster, Kubectl tool and Kubernetes API. 
 
-### Demo: Implement CodeBuild in Deployment Stage
+### Manually create sample Kubernetes Deployment
 
 In the second part of this article, a new Kubernetes cluster with one slave node server has been created. Create a *yaml* file named **sample_deployment.yaml**, and its content can be found [here](https://github.com/yi-le/LifeExperience/blob/master/sample_deployment.yaml).
 
@@ -178,8 +178,8 @@ It can be observed that two pods are terminating while two new pods are being la
 kubectl logs ${POD_NAME}
 ```
 "Another Hello Kubernetes!" will be returned, which indicates the completion of deployment.
-
-In AWS CloudFormation, this CodeBuild process can be defined in *yaml* format.
+### Create Kubernetes Deployment step in CodeBuild
+In AWS CloudFormation, we can define similar step in CodeBuild as following *yaml* format.
 
 ```yaml
 Deployment:
