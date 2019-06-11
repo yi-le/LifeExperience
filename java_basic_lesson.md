@@ -27,3 +27,5 @@ Java Basic Lesson:
 |11|Algorithms and Interview: Technical Optimization|
 |12|Algorithms and Interview: Hone Your Skills|
 
+1. From: Hello World! JVM compile first, run later
+2. java name, class, method, variable, statement, comment

@@ -185,8 +185,18 @@ It can be observed that two pods are terminating while two new pods are being la
 kubectl logs ${POD_NAME}
 ```
 "Another Hello Kubernetes!" will be returned, which indicates the completion of deployment.
+
 ### Deploy Kubernetes pod continously in CodeBuild
-In AWS CloudFormation, we can define similar step in CodeBuild as following *yaml* format. *insert ryo's comments point3*
+
+In AWS CloudFormation, we can define similar step in CodeBuild as following *yaml* format. 
+
+In this demonstration, the environment variable DEMO_GREETING is updated and deployed to container. It's a common scenerio that the developers want to use the most current version of image to replace the previous ones in containerized application, and it's also recommended that docker image can be tagged by git hash commit from source code. In that case, the same version of source code, *.war* file and docker iamge will be tagged by the same git commit hash, which makes it easy to track code changeset, troubleshoot and revert back to previous version.
+
+The command line to update image is like:
+```bash
+kubectl set image deployment/${DEPLOYMENT_NAME} ${APP_NAME}=${IMAGE_NAME}:${IMAGE_TAG}
+```
+Following is a detailed example of updating environment variable in containerized application.
 
 ```yaml
 Deployment:
