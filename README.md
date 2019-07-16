@@ -35,3 +35,13 @@ kubectl get nodes
 ```bash
 git checkout $(git rev-list -n 1 HEAD -- "$file")^ -- "$file"
 ```
+
+## Set default java version in Mac
+
+```bash
+/usr/libexec/java_home -V
+```
+
+```bash
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+```

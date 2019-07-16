@@ -214,6 +214,39 @@ public class Demo{
 Question:
 1. What is overloading in Java?
 
+### Polymorphism
+
+```java
+public class Demo {
+	static void somebodySayHi(Person a){
+		a.sayHi();
+	}
+
+	public static void main(String[] args) {
+		Person a = new Student();
+		Person b = new Person();
+		somebodySayHi(a);
+		somebodySayHi(b);
+	}
+}
+
+class Person {
+	void syaHi(){
+		System.out.println("Hi");
+	}
+}
+
+class Student extends Person{
+	void sayHi(){
+		System.out.println("Hi I am a Student");
+	}
+}
+```
+
+Question:
+1. When we define the static method somebodySayHi(Person a), can we predict what will be printed out exactly?
+2. In main method, is "a" a Person Object? Is "a" a Student Object?
+
 ### Abstract Class
 
 Question:
